@@ -6,7 +6,7 @@ struct node { int i; struct node *next; };
 struct node * insert_front(struct node *, int);
 struct node * insert_ordered(struct node *, int);
 void print_list(struct node *);
-char*  find_int(struct node *);
+struct node * find_int(struct node *, int);
 //char*  find_artist(struct node *);
 struct node * random_pointer(struct node *);
 struct node * rm_song(struct node *);
@@ -24,18 +24,25 @@ struct node * insert_front(struct node * x, int a) {
 struct node * insert_ordered(struct node * x, int a) {
   
   struct node *temp = (struct node *)malloc(sizeof(struct node));
-  temp = x;
-  struct node *inbetween = (struct node *)malloc(sizeof(struct node));
-  inbetween->i = a;
-  while (temp) {
-    if (a < temp->i){
-      inbetween->next = temp;
-    }	
+  struct node *front = (struct node *)malloc(sizeof(struct node));
+  front = x; 
+  temp->i = a;
+  if (a < x->i) {
+    temp->next = x;
+    return temp;
   }
-  front->next = x;
-  front->i = a;
-  return front;
-  
+  else {
+    while(x->next) {
+      if (a < x->next->i) {
+	temp->next = x->next;
+	x->next = temp;
+	return front;	
+      }
+      else {
+	x = x->next;
+      }
+    }
+  }
 }
 
 void print_list(struct node *x) {
@@ -43,6 +50,16 @@ void print_list(struct node *x) {
     printf("%d\n", x->i);
     x = x->next;
   }
+}
+
+struct node *  find_int(struct node *x, int a) {
+  while(x) {
+    if (x->i == a) {
+      return x;
+    }
+    printf("DNE");
+  }
+  printf("DNE");
 }
 
 struct node * free_list(struct node * x) {
@@ -63,25 +80,31 @@ int main () {
 
   struct node *tester = NULL;
   
-  printf("The list is:");
+  printf("The list is:\n");
   print_list(tester);
   printf("\n");
   
   int i;
 
-  for (i = 1;i < 15; i++) {
+  for (i = 15;i > 10; i -= 2) {
     tester = insert_front(tester,i);
   }
   
+  tester = insert_ordered(tester, 12);
+  tester = insert_ordered(tester, 12);
+
   printf("\n");
-  printf("The list now is:");
+  printf("The list now is:\n");
   print_list(tester);
 
+  find_int(tester, 200);
+  
   printf("\n");
   printf("The list after clearing is: ");
   print_list(free_list(tester));
   printf("\n");
-  
+
+
 }
 
 
