@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include <random.h>
 
 struct node { int i; struct node *next; };
 
@@ -57,9 +58,25 @@ struct node *  find_int(struct node *x, int a) {
     if (x->i == a) {
       return x;
     }
-    printf("DNE");
+    x = x->next;
   }
-  printf("DNE");
+}
+
+struct node * random_pointer(struct node *x) {
+ 
+  struct node *temp = (struct node *)malloc(sizeof(struct node));
+  temp = x;
+  int counter = 0;
+  srand(time(NULL));
+  int rndmNum;
+  while (temp) {
+    counter++;
+    temp = temp->next;
+  } 
+  for (rndmNum = rand() % counter;rndmNum; rndmNum --) {
+    x = x->next;
+  }
+  return x;
 }
 
 struct node * free_list(struct node * x) {
@@ -92,13 +109,17 @@ int main () {
   
   tester = insert_ordered(tester, 12);
   tester = insert_ordered(tester, 12);
-
+  
   printf("\n");
   printf("The list now is:\n");
   print_list(tester);
 
-  find_int(tester, 200);
+  printf("Finding 12 in list and printing\n");
+  print_list(find_int(tester, 12));
   
+  printf("Finding random pointer and printing\n");
+  print_list(random_pointer(tester));
+
   printf("\n");
   printf("The list after clearing is: ");
   print_list(free_list(tester));
