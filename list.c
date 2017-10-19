@@ -10,7 +10,7 @@ void print_list(struct node *);
 struct node * find_int(struct node *, int);
 //char*  find_artist(struct node *);
 struct node * random_pointer(struct node *);
-struct node * rm_song(struct node *);
+struct node * rm_song(struct node *, int);
 struct node * free_list(struct node *);
 
 struct node * insert_front(struct node * x, int a) {
@@ -79,6 +79,26 @@ struct node * random_pointer(struct node *x) {
   return x;
 }
 
+struct node * rm_song(struct node *x, int a) {
+
+  struct node *temp = (struct node *)malloc(sizeof(struct node));
+  struct node *front = (struct node *)malloc(sizeof(struct node));
+  front = x;
+  
+  if (a == x->i) {
+    return x->next;
+  }
+
+  while(x->next) {
+
+    if (x->next->i == a) {
+      x->next = x->next->next;
+      return front;
+    }
+    x = x->next;
+  }
+}
+
 struct node * free_list(struct node * x) {
   
   struct node *prev;
@@ -119,6 +139,10 @@ int main () {
   
   printf("Finding random pointer and printing\n");
   print_list(random_pointer(tester));
+
+  printf("Removing 13\n");
+  tester = rm_song(tester,13);
+  print_list(tester);
 
   printf("\n");
   printf("The list after clearing is: ");
