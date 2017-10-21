@@ -30,13 +30,15 @@ struct song_node * insert_ordered(struct song_node *x, char *s_name, char *s_art
       if (strcmp(s_artist, x->next->artist) < 0) {
 	temp->next = x->next;
 	x->next = temp;
-	return front;	
+	return front;
       }
       else {
 	x = x->next;
       }
     }
   }
+  x->next = temp;
+  return front;
 }
 
 void print_list(struct song_node *x) {
@@ -44,18 +46,49 @@ void print_list(struct song_node *x) {
     printf("%s:%s |", x->artist, x->name);
     x = x->next;
   }
+  printf("\n\n");
 }
 
-/*
-struct node *  find_int(struct node *x, int a) {
+void print_node(struct song_node *x) {
+
+  printf("%s:%s |", x->artist, x->name);
+  
+}
+
+struct song_node * find_artist(struct song_node *x, char *s_artist) {
   while(x) {
-    if (x->i == a) {
+    if (strcmp(x->artist, s_artist) == 0) {
       return x;
     }
     x = x->next;
   }
 }
 
+void print_letter(struct song_node *x, char letter) {
+  
+  while(x) {
+    //printf("%d%d", x->artist[0], letter);
+    if (x->artist[0] == letter) {
+      print_node(x);
+    }
+    x = x->next;
+  }
+  printf("\n\n");
+}
+
+void songs_by_artist(struct song_node *x, char *s_artist) {
+
+  while(x) {
+    if (strcmp(x->artist, s_artist) == 0) {
+      print_node(x);
+    }
+    x = x->next;
+  }
+  printf("\n\n");
+  
+}
+
+/*
 struct node * random_pointer(struct node *x) {
  
   struct node *temp = (struct node *)malloc(sizeof(struct node));
@@ -109,15 +142,32 @@ struct node * free_list(struct node * x) {
 */
 
 int main() {
-  struct song_node *x;
-  strcpy(x->artist, "Smash Mouth");
-  /*
-  strcpy(x->name, "All Star");
-  x->next = NULL;
+  struct song_node *tester = (struct song_node *)malloc(sizeof(struct song_node));
+  strcpy(tester->artist, "Smash Mouth");\
+  strcpy(tester->name, "All Star");
+  tester->next = NULL;
   
-  printf("x");
-  print_list(x);
+  printf("Printing single node\n");
+  print_list(tester);
+  
+  printf("Adding many nodes and then reprinting\n");
+  tester = insert_ordered(tester, "Faded", "Alan Walker");
+  tester = insert_ordered(tester, "Sing Me to Sleep", "Alan Walker");
+  tester = insert_ordered(tester, "Tired", "Alan Walker");
+  tester = insert_ordered(tester, "Too Good at Goodbyes", "Sam Smith");
+  tester = insert_ordered(tester, "Ride" , "Twenty one pilots");
+  tester = insert_ordered(tester, "Look What You Made Me Do", "Taylor Swift");
+  tester = insert_ordered(tester, "Love Story", "Taylor Swift");
+  tester = insert_ordered(tester, "Dusk til Dawn", "Zayn");
+  print_list(tester);
 
-  printf("x");
-  */
+  printf("Finding \"Sam Smith\" and returning a pointer\n");
+  print_list(find_artist(tester, "Sam Smith"));
+
+  printf("Printing nodes with letter \"S\"\n");
+  print_letter(tester, 'S');
+
+  printf("Printing nodes with artist \"Taylor Swift\"\n");
+  songs_by_artist(tester, "Taylor Swift");
+
 }
