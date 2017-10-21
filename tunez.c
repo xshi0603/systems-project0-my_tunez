@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "tunez.h"
 
 struct song_node * insert_front(struct song_node * x, char *s_name, char *s_artist) {
@@ -88,10 +89,10 @@ void songs_by_artist(struct song_node *x, char *s_artist) {
   
 }
 
-/*
-struct node * random_pointer(struct node *x) {
+struct song_node * shuffle(struct song_node *x) {
  
-  struct node *temp = (struct node *)malloc(sizeof(struct node));
+  struct song_node *temp = (struct song_node *)malloc(sizeof(struct song_node));
+  struct song_node *new = (struct song_node *)malloc(sizeof(struct song_node));
   temp = x;
   int counter = 0;
   srand(time(NULL));
@@ -103,9 +104,26 @@ struct node * random_pointer(struct node *x) {
   for (rndmNum = rand() % counter;rndmNum; rndmNum --) {
     x = x->next;
   }
-  return x;
+  new = x;
+  return new;
 }
 
+
+struct song_node * free_list(struct song_node * x) {
+  
+  struct song_node *prev;
+  while (x) {
+    prev = x;
+    x = x->next;
+    free(prev);
+    prev = NULL;
+  }    
+
+  return x;
+  
+}
+
+/*
 struct node * rm_song(struct node *x, int a) {
 
   struct node *temp = (struct node *)malloc(sizeof(struct node));
@@ -125,21 +143,8 @@ struct node * rm_song(struct node *x, int a) {
     x = x->next;
   }
 }
-
-struct node * free_list(struct node * x) {
-  
-  struct node *prev;
-  while (x) {
-    prev = x;
-    x = x->next;
-    free(prev);
-    prev = NULL;
-  }    
-
-  return x;
-  
-}
 */
+
 
 int main() {
   struct song_node *tester = (struct song_node *)malloc(sizeof(struct song_node));
@@ -170,4 +175,10 @@ int main() {
   printf("Printing nodes with artist \"Taylor Swift\"\n");
   songs_by_artist(tester, "Taylor Swift");
 
+  printf("Testing shuffle\n");
+  print_list(shuffle(tester));
+
+  printf("Freeing the list and printing\n");
+  tester = free_list(tester);
+  print_list(tester);
 }
