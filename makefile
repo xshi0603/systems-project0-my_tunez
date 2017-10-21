@@ -1,12 +1,12 @@
 all: tunez.o
-	gcc -o tunez tunez.o
+	gcc tunez.o -o tunez.out
 
-tunez.o: tunez.c main.c
+tunez.o: tunez.c tunez.h
 	gcc -c tunez.c
 
 clean:
-	rm *o
-	rm *~
+	rm -f *o
+	rm -f *~
 
 run: all
-	./tunez
+	./tunez.out

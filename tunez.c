@@ -108,6 +108,27 @@ struct song_node * shuffle(struct song_node *x) {
   return new;
 }
 
+struct song_node * rm_song(struct song_node *x, char *s_name) {
+
+  struct song_node *temp = (struct song_node *)malloc(sizeof(struct song_node));
+  struct song_node *front = (struct song_node *)malloc(sizeof(struct song_node));
+  front = x;
+  
+  if (strcmp(s_name, x->name) == 0) {
+    return x->next;
+  }
+
+  while(x->next) {
+
+    if (strcmp(x->next->name, s_name) == 0) {
+      x->next = x->next->next;
+      return front;
+    }
+    x = x->next;
+  }
+  
+  
+}
 
 struct song_node * free_list(struct song_node * x) {
   
@@ -122,29 +143,6 @@ struct song_node * free_list(struct song_node * x) {
   return x;
   
 }
-
-/*
-struct node * rm_song(struct node *x, int a) {
-
-  struct node *temp = (struct node *)malloc(sizeof(struct node));
-  struct node *front = (struct node *)malloc(sizeof(struct node));
-  front = x;
-  
-  if (a == x->i) {
-    return x->next;
-  }
-
-  while(x->next) {
-
-    if (x->next->i == a) {
-      x->next = x->next->next;
-      return front;
-    }
-    x = x->next;
-  }
-}
-*/
-
 
 int main() {
   struct song_node *tester = (struct song_node *)malloc(sizeof(struct song_node));
@@ -178,6 +176,10 @@ int main() {
   printf("Testing shuffle\n");
   print_list(shuffle(tester));
 
+  printf("Removing \"Look What You Made Me Do\"\n");
+  tester = rm_song(tester, "Look What You Made Me Do");
+  print_list(tester);
+  
   printf("Freeing the list and printing\n");
   tester = free_list(tester);
   print_list(tester);

@@ -12,5 +12,5 @@ struct song_node * find_artist(struct song_node *, char *);
 void print_letter(struct song_node *, char);
 void songs_by_artist(struct song_node *, char *);
 struct song_node * shuffle(struct song_node *);
-struct song_node * rm_song(struct song_node *, int);
+struct song_node * rm_song(struct song_node *, char *);
 struct song_node * free_list(struct song_node *);
